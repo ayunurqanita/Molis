@@ -1,4 +1,4 @@
-package com.molis.molis.Service;
+package com.molis.molis.Service.ServiceImpl;
 
 import com.molis.molis.Model.User;
 import com.molis.molis.Repository.UserRepository;
