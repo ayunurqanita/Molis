@@ -33,10 +33,10 @@ public class Merk {
     @Column(name = "nama_perusahaan")
     private String namaPerusahaan;
 
-    @Column(name = "link_website")
+    @Column(name = "link_website", length = 1000)
     private String linkWebsite;
 
-    @Column(name = "keterangan")
+    @Column(name = "keterangan", length = 1000)
     private String keterangan;
 
     @JsonIgnore

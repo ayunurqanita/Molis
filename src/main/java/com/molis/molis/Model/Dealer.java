@@ -32,16 +32,16 @@ public class Dealer {
     @Column(name = "nama_dealer")
     private String namaDealer;
 
-    @Column(name = "alamat")
+    @Column(name = "alamat", length = 500)
     private String alamat;
 
     @Column(name = "kontak")
     private String kontak;
 
-    @Column(name = "link_website")
+    @Column(name = "link_website", length = 1000)
     private String linkWebsite;
 
-    @Column(name = "link_maps")
+    @Column(name = "link_maps", length = 1000)
     private String map;
 
     @Column(name = "latitude")
@@ -57,7 +57,7 @@ public class Dealer {
     private Merk merkId;
 
 
-    @Column(name = "keterangan")
+    @Column(name = "keterangan", length = 1000)
     private String keterangan;
 
     @JsonIgnore

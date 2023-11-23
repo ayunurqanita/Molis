@@ -50,7 +50,7 @@ public class Produk {
     @Column(name = "daya_max")
     private String dayaMax;
 
-    @Column(name = "link_website_produk")
+    @Column(name = "link_website_produk", length = 1000)
     private String linkWebsiteProduk;
 
     @Column(name = "logo")
@@ -59,7 +59,7 @@ public class Produk {
     @Column(name = "gambar_produk")
     private String gambarProduk;
 
-    @Column(name ="keterangan")
+    @Column(name ="keterangan", length = 1000)
     private String keterangan;
 
     @JsonIgnore
