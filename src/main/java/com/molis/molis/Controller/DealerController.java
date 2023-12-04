@@ -32,7 +32,6 @@ public class DealerController {
     public MerkRepository merkRepository;
 
     @PostMapping("/add")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DealerResponse> createDealer(@RequestBody DealerDto dealerDto) {
         DealerResponse createdDealer = dealerService.createDealer(dealerDto);
 
@@ -51,7 +50,6 @@ public class DealerController {
     }
 
     @PutMapping("/update/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DealerResponse> updateDealer(@PathVariable Integer id, @RequestBody Dealer updatedDealerDto) {
         try {
             Dealer updatedDealer = dealerService.updateDealer(id, updatedDealerDto);
@@ -106,7 +104,6 @@ public class DealerController {
     }
 
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> deleteDealer(@PathVariable("id") Integer dealerId) {
         dealerService.softDeleteById(dealerId);
         return ResponseEntity.ok("Dealer with ID " + dealerId + " soft deleted successfully.");

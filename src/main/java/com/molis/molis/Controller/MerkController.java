@@ -24,14 +24,12 @@ public class MerkController {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Merk> createMerk(@RequestBody MerkDto merkDto) {
         Merk createdMerk = merkService.createMerk(merkDto);
         return ResponseEntity.ok(createdMerk);
     }
 
     @PutMapping("/update/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Merk> updateMerk(@PathVariable Integer id, @RequestBody Merk updatedMerk) {
         try {
             Merk result = merkService.updateMerk(id, updatedMerk);
@@ -60,7 +58,6 @@ public class MerkController {
     public List<Merk> findByNamaPerusahaan(@RequestParam String namaPerusahaan) { return merkService.findByNamaPerusahaan(namaPerusahaan);}
 
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> deleteMerk(@PathVariable("id") Integer merkId) {
         merkService.softDeleteById(merkId);
         return ResponseEntity.ok("Merk with ID " + merkId + " soft deleted successfully.");

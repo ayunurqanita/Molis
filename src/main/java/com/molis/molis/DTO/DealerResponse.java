@@ -32,7 +32,6 @@ public class DealerResponse {
     public void setMerk(Merk merk) {
         MerkResponse merkResponse = new MerkResponse();
         merkResponse.setNamaMerk(merk.getNamaMerk());
-        // set properti lainnya sesuai kebutuhan
 
         this.merk = merkResponse;
     }
@@ -60,10 +59,6 @@ public class DealerResponse {
             return namaMerk;
         }
 
-
-        // properti lainnya sesuai kebutuhan
-
-        // constructors, getters, setters
     }
 
 

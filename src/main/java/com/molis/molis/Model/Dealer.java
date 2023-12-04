@@ -50,7 +50,6 @@ public class Dealer {
     @Column(name = "longitude")
     private String longitude;
 
-    // Di kelas Dealer
     @ManyToOne
     @JoinColumn(name = "merk_id", referencedColumnName = "merk_id")
     @JsonBackReference

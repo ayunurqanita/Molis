@@ -28,7 +28,6 @@ public class ProdukController {
     public MerkRepository merkRepository;
 
     @PostMapping("/add")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ProdukResponse> createProduk(@RequestBody ProdukDto produkDto) {
         try {
             Produk createdProduk = produkService.createProduk(produkDto);
@@ -72,7 +71,6 @@ public class ProdukController {
     }
 
     @PutMapping("/update/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ProdukResponse> updateProduk(@PathVariable Integer id, @RequestBody Produk updatedProdukDto) {
         try {
             Produk updatedProduk = produkService.updateProduk(id, updatedProdukDto);
@@ -131,7 +129,6 @@ public class ProdukController {
     }
 
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> deleteProduk(@PathVariable("id") Integer produkId) {
         produkService.softDeleteById(produkId);
         return ResponseEntity.ok("Produk with ID " + produkId + " soft deleted successfully.");

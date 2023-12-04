@@ -69,13 +69,6 @@ public class Merk {
         this.merkId = merkId;
     }
 
-/*    // Menetapkan relasi @OneToMany dengan Produk
-    @OneToMany(mappedBy = "merk", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Produk> produks = new ArrayList<>();
-
-    // Menetapkan relasi @OneToMany dengan Dealer
-    @OneToMany(mappedBy = "merkId", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Dealer> dealers = new ArrayList<>();*/
 
 }
 
