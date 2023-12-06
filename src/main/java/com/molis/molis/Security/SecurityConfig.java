@@ -31,9 +31,6 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/produk/add","/api/produk/update/{id}", "/api/produk/delete/{id}").hasRole("ADMIN")
-                .antMatchers("/api/dealers/add","/api/dealers/update/{id}", "/api/dealers/delete/{id}").hasRole("ADMIN")
-                .antMatchers("/api/merk/add","/api/merk/update/{id}", "/api/merk/delete/{id}").hasRole("ADMIN")
                 .antMatchers("/api/**", "/h2-console/**").permitAll()
                 .anyRequest().authenticated();
         http.headers().frameOptions().disable();
