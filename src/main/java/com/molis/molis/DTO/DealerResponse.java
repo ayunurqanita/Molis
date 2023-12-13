@@ -18,39 +18,22 @@ public class DealerResponse {
     private String latitude;
     private String longitude;
     private String keterangan;
-    private MerkResponse merk;
+    private Merk merk;
     private String updatedBy;
     private LocalDateTime updatedDate;
 
-    private String message;
-    private com.molis.molis.DTO.MerkResponse merkId;
 
-    public MerkResponse getMerk() {
-        return merk;
-    }
+    public Merk getMerk(){return merk;}
 
     public void setMerk(Merk merk) {
         MerkResponse merkResponse = new MerkResponse();
         merkResponse.setNamaMerk(merk.getNamaMerk());
-
-        this.merk = merkResponse;
+        this.merk = merk;
     }
 
-    public void setMerkId(com.molis.molis.DTO.MerkResponse merkId) {
-
-        this.merkId = merkId;
-    }
-
-    public com.molis.molis.DTO.MerkResponse getMerkId() {
-        return merkId;
-    }
-
-
-    public static class MerkResponse {
+    public static class MerkResponse{
         private String namaMerk;
 
-
-        // Setter for namaMerk
         public void setNamaMerk(String namaMerk) {
             this.namaMerk = namaMerk;
         }
@@ -58,9 +41,5 @@ public class DealerResponse {
         public String getNamaMerk() {
             return namaMerk;
         }
-
     }
-
-
-
 }

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,16 +50,15 @@ public class DealerServiceImpl implements DealerService {
                 newDealer.setLatitude(dealerDto.getLatitude());
                 newDealer.setLongitude(dealerDto.getLongitude());
                 newDealer.setKeterangan(dealerDto.getKeterangan());
-                newDealer.setCreatedDate(LocalDateTime.now());
-                newDealer.setCreatedBy(dealerDto.getCreatedBy());
-                newDealer.setActive(true);
-                newDealer.setDeleted(dealerDto.isDeleted());
-
                 newDealer.setMerkId(merk);
+                newDealer.setCreatedBy(dealerDto.getCreatedBy());
+                newDealer.setCreatedDate(LocalDateTime.now());
+                newDealer.setActive(true);
+                newDealer.setDeleted(false);
 
                 Dealer savedDealer = dealerRepository.save(newDealer);
 
-                // Buat objek DealerResponse
+                // Membuat objek DealerResponse
                 DealerResponse response = new DealerResponse();
                 response.setDealerId(savedDealer.getDealerId());
                 response.setNamaDealer(savedDealer.getNamaDealer());
@@ -69,31 +69,25 @@ public class DealerServiceImpl implements DealerService {
                 response.setLatitude(savedDealer.getLatitude());
                 response.setLongitude(savedDealer.getLongitude());
                 response.setKeterangan(savedDealer.getKeterangan());
-                response.setMerk(savedDealer.getMerkId());
-                // Set properti response sesuai kebutuhan
-
-                // Buat objek MerkResponse
-                DealerResponse.MerkResponse merkResponse = new DealerResponse.MerkResponse();
-                merkResponse.setNamaMerk(savedDealer.getMerkId().getNamaMerk());
-
                 response.setMerk(merk);
 
                 return response;
             } else {
-                return createErrorResponse("Dealer dengan nama tersebut sudah ada");
+                // Handle existing dealer, misalnya dengan memberikan respons khusus
+                throw new EntityExistsException("Dealer dengan nama tersebut sudah ada");
             }
         } catch (EntityNotFoundException e) {
-            return createErrorResponse(e.getMessage());
+            // Tangani pengecualian dan lemparkan kembali sebagai EntityNotFoundException
+            throw e;
+        } catch (EntityExistsException e) {
+            // Tangani pengecualian dan lemparkan kembali sebagai EntityExistsException
+            throw e;
         } catch (Exception e) {
-            return createErrorResponse("Terjadi kesalahan saat membuat dealer");
+            // Tangani pengecualian umum dan lemparkan sebagai RuntimeException
+            throw new RuntimeException("Terjadi kesalahan saat membuat dealer", e);
         }
     }
 
-    private DealerResponse createErrorResponse(String message) {
-        DealerResponse response = new DealerResponse();
-        response.setMessage(message);
-        return response;
-    }
 
     @Override
     public Dealer updateDealer(Integer id, Dealer updatedDealer) {

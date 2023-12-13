@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
@@ -33,21 +34,45 @@ public class DealerController {
 
     @PostMapping("/add")
     public ResponseEntity<DealerResponse> createDealer(@RequestBody DealerDto dealerDto) {
-        DealerResponse createdDealer = dealerService.createDealer(dealerDto);
+        try {
+            DealerResponse createdDealer = dealerService.createDealer(dealerDto);
 
-        if (createdDealer != null) {
-            Merk merk = merkRepository.findById(dealerDto.getMerkId())
-                    .orElseThrow(() -> new EntityNotFoundException("Merk dengan ID " + dealerDto.getMerkId() + " tidak ditemukan"));
+            if (createdDealer != null) {
+                // Optional: Load additional data or perform additional actions if needed
+                // For example, load Merk information associated with the created Dealer
+                Merk merk = merkRepository.findById(dealerDto.getMerkId())
+                        .orElseThrow(() -> new EntityNotFoundException("Merk dengan ID " + dealerDto.getMerkId() + " tidak ditemukan"));
 
-            createdDealer.setMerk(merk);
+                // Create DealerResponse object
+                DealerResponse response = new DealerResponse();
+                response.setDealerId(createdDealer.getDealerId());
+                response.setNamaDealer(createdDealer.getNamaDealer());
+                response.setAlamat(createdDealer.getAlamat());
+                response.setKontak(createdDealer.getKontak());
+                response.setLinkWebsite(createdDealer.getLinkWebsite());
+                response.setMap(createdDealer.getMap());
+                response.setLatitude(createdDealer.getLatitude());
+                response.setLongitude(createdDealer.getLongitude());
+                response.setKeterangan(createdDealer.getKeterangan());
+                response.setMerk(merk);
 
-            return ResponseEntity.ok(createdDealer);
-        } else {
-            // Handle case when createdDealer is null
-
+                return ResponseEntity.ok(response);
+            } else {
+                // Handle case when createdDealer is null
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+        } catch (EntityNotFoundException e) {
+            // Handle EntityNotFoundException, for example, return a 404 response
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (EntityExistsException e) {
+            // Handle EntityExistsException, for example, return a 409 response
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        } catch (Exception e) {
+            // Handle other exceptions, for example, return a 500 response
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 
     @PutMapping("/update/{id}")
     public ResponseEntity<DealerResponse> updateDealer(@PathVariable Integer id, @RequestBody Dealer updatedDealerDto) {
