@@ -1,17 +1,14 @@
 package com.molis.molis.Controller;
 
-
 import com.molis.molis.DTO.DealerDto;
 import com.molis.molis.DTO.DealerResponse;
 import com.molis.molis.Model.Dealer;
 import com.molis.molis.Model.Merk;
-import com.molis.molis.Repository.DealerRepository;
 import com.molis.molis.Repository.MerkRepository;
 import com.molis.molis.Service.DealerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityExistsException;
@@ -27,15 +24,12 @@ public class DealerController {
     public DealerService dealerService;
 
     @Autowired
-    public DealerRepository dealerRepository;
-
-    @Autowired
     public MerkRepository merkRepository;
 
     @PostMapping("/add")
     public ResponseEntity<DealerResponse> createDealer(@RequestBody DealerDto dealerDto) {
         try {
-            DealerResponse createdDealer = dealerService.createDealer(dealerDto);
+            Dealer createdDealer = dealerService.createDealer(dealerDto);
 
             if (createdDealer != null) {
                 // Optional: Load additional data or perform additional actions if needed
@@ -72,7 +66,6 @@ public class DealerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
 
     @PutMapping("/update/{id}")
     public ResponseEntity<DealerResponse> updateDealer(@PathVariable Integer id, @RequestBody Dealer updatedDealerDto) {
@@ -112,15 +105,16 @@ public class DealerController {
         }
     }
 
-
     @GetMapping("/getAll")
-    public List<DealerResponse> getAllDealers() {
-        return dealerService.getAllDealers();
+    public ResponseEntity<List<DealerResponse>> getAllDealer() {
+        List<DealerResponse> dealerList = dealerService.getAllDealer();
+        return new ResponseEntity<>(dealerList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public DealerResponse getDealerById(@PathVariable Integer id) {
-        return dealerService.getDealerById(id);
+    public ResponseEntity<DealerResponse> getDealerById(@PathVariable Integer id) {
+        DealerResponse dealer = dealerService.getDealerById(id);
+        return new ResponseEntity<>(dealer, HttpStatus.OK);
     }
 
     @GetMapping("/findByName")
@@ -135,5 +129,7 @@ public class DealerController {
     }
 
     @GetMapping("/active")
-    public List<DealerResponse> getActiveDealers() { return dealerService.getActiveDealers();}
+    public List<DealerResponse> getActiveDealer() {
+        return dealerService.getActiveDealer();
+    }
 }

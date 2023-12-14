@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MerkResponse {
+    private Integer merkId;
     private String namaMerk;
     private String namaPerusahaan;
     private String linkWebsite;

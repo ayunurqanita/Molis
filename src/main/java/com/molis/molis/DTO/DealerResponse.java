@@ -18,20 +18,24 @@ public class DealerResponse {
     private String latitude;
     private String longitude;
     private String keterangan;
-    private Merk merk;
-    private String updatedBy;
-    private LocalDateTime updatedDate;
+    private MerkResponse merk;
 
-
-    public Merk getMerk(){return merk;}
-
-    public void setMerk(Merk merk) {
-        MerkResponse merkResponse = new MerkResponse();
-        merkResponse.setNamaMerk(merk.getNamaMerk());
-        this.merk = merk;
+    public MerkResponse getMerk() {
+        return merk;
     }
 
-    public static class MerkResponse{
+    public void setMerk(Merk merk) {
+        if (merk != null) {
+            MerkResponse merkResponse = new MerkResponse();
+            merkResponse.setNamaMerk(merk.getNamaMerk());
+            this.merk = merkResponse;
+        }
+    }
+
+    public void setNamaMerk(String namaMerk) {
+    }
+
+    public static class MerkResponse {
         private String namaMerk;
 
         public void setNamaMerk(String namaMerk) {

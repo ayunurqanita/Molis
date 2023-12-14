@@ -9,7 +9,6 @@ import com.molis.molis.Repository.DealerRepository;
 import com.molis.molis.Repository.MerkRepository;
 import com.molis.molis.Service.DealerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,20 +17,19 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class DealerServiceImpl implements DealerService {
 
     @Autowired
-    public MerkRepository merkRepository;
+    private DealerRepository dealerRepository;
 
     @Autowired
-    public DealerRepository dealerRepository;
+    private MerkRepository merkRepository;
 
     @Override
-    public DealerResponse createDealer(DealerDto dealerDto) {
+    public Dealer createDealer(DealerDto dealerDto) {
         try {
             // Cek apakah Merk dengan ID tersebut ada
             Merk merk = merkRepository.findById(dealerDto.getMerkId())
@@ -52,26 +50,10 @@ public class DealerServiceImpl implements DealerService {
                 newDealer.setKeterangan(dealerDto.getKeterangan());
                 newDealer.setMerkId(merk);
                 newDealer.setCreatedBy(dealerDto.getCreatedBy());
-                newDealer.setCreatedDate(LocalDateTime.now());
-                newDealer.setActive(true);
-                newDealer.setDeleted(false);
+                newDealer.setCreatedDate(dealerDto.getCreatedDate());
 
-                Dealer savedDealer = dealerRepository.save(newDealer);
 
-                // Membuat objek DealerResponse
-                DealerResponse response = new DealerResponse();
-                response.setDealerId(savedDealer.getDealerId());
-                response.setNamaDealer(savedDealer.getNamaDealer());
-                response.setAlamat(savedDealer.getAlamat());
-                response.setKontak(savedDealer.getKontak());
-                response.setLinkWebsite(savedDealer.getLinkWebsite());
-                response.setMap(savedDealer.getMap());
-                response.setLatitude(savedDealer.getLatitude());
-                response.setLongitude(savedDealer.getLongitude());
-                response.setKeterangan(savedDealer.getKeterangan());
-                response.setMerk(merk);
-
-                return response;
+                return dealerRepository.save(newDealer);
             } else {
                 // Handle existing dealer, misalnya dengan memberikan respons khusus
                 throw new EntityExistsException("Dealer dengan nama tersebut sudah ada");
@@ -88,10 +70,8 @@ public class DealerServiceImpl implements DealerService {
         }
     }
 
-
     @Override
     public Dealer updateDealer(Integer id, Dealer updatedDealer) {
-        // Memastikan bahwa dealer dengan ID yang diberikan ada dalam database
         Dealer existingDealer = dealerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Dealer not found with id: " + id));
 
@@ -103,25 +83,60 @@ public class DealerServiceImpl implements DealerService {
         existingDealer.setMap(updatedDealer.getMap());
         existingDealer.setLatitude(updatedDealer.getLatitude());
         existingDealer.setLongitude(updatedDealer.getLongitude());
-        existingDealer.setMerkId(updatedDealer.getMerkId());
         existingDealer.setKeterangan(updatedDealer.getKeterangan());
+        existingDealer.setMerkId(updatedDealer.getMerkId());
         existingDealer.setUpdatedBy(updatedDealer.getUpdatedBy());
         existingDealer.setUpdatedDate(LocalDateTime.now());
-        existingDealer.setActive(updatedDealer.isActive());
-        existingDealer.setDeleted(updatedDealer.isDeleted());// Pastikan bahwa nilai active diatur dengan benar
+
+        // Perbarui merk jika perlu
+        if (updatedDealer.getMerkId() != null) {
+            Merk existingMerk = merkRepository.findById(updatedDealer.getMerkId().getMerkId())
+                    .orElseThrow(() -> new RuntimeException("Merk not found with id: " + updatedDealer.getMerkId().getMerkId()));
+
+            existingDealer.setMerkId(existingMerk);
+        }
 
         // Simpan perubahan ke dalam database
         return dealerRepository.save(existingDealer);
     }
 
+    private DealerResponse convertToDealerResponse(Dealer dealer) {
+        DealerResponse response = new DealerResponse();
+
+        response.setDealerId(dealer.getDealerId());
+        response.setNamaDealer(dealer.getNamaDealer());
+        response.setAlamat(dealer.getAlamat());
+        response.setKontak(dealer.getKontak());
+        response.setLinkWebsite(dealer.getLinkWebsite());
+        response.setMap(dealer.getMap());
+        response.setLatitude(dealer.getLatitude());
+        response.setLongitude(dealer.getLongitude());
+        response.setMerk(dealer.getMerkId());
+        response.setKeterangan(dealer.getKeterangan());
+
+        // Pengecekan null untuk objek Merk
+        if (dealer.getMerkId() != null) {
+            MerkResponse merkResponse = new MerkResponse();
+            Merk merk = dealer.getMerkId();
+            merkResponse.setNamaMerk(merk.getNamaMerk());
+
+            response.setNamaMerk(merkResponse.getNamaMerk());
+        } else {
+            // Atau, sesuaikan dengan kebutuhan Anda, misalnya, setNamaMerk menjadi null atau string kosong
+            response.setNamaMerk(null);
+        }
+
+        return response;
+    }
+
+
     @Override
-    public List<DealerResponse> getAllDealers() {
+    public List<DealerResponse> getAllDealer() {
         List<Dealer> dealers = dealerRepository.findAll();
         return dealers.stream()
                 .map(this::convertToDealerResponse)
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public DealerResponse getDealerById(Integer dealerId) {
@@ -131,34 +146,8 @@ public class DealerServiceImpl implements DealerService {
         return convertToDealerResponse(dealer);
     }
 
-
-    private DealerResponse convertToDealerResponse(Dealer dealer) {
-        DealerResponse response = new DealerResponse();
-
-        response.setDealerId(dealer.getDealerId());
-        response.setNamaDealer(dealer.getNamaDealer());
-        response.setDealerId(dealer.getDealerId());
-        response.setNamaDealer(dealer.getNamaDealer());
-        response.setAlamat(dealer.getAlamat());
-        response.setKontak(dealer.getKontak());
-        response.setLinkWebsite(dealer.getLinkWebsite());
-        response.setMap(dealer.getMap());
-        response.setLatitude(dealer.getLatitude());
-        response.setLongitude(dealer.getLongitude());
-        response.setKeterangan(dealer.getKeterangan());
-        response.setMerk(dealer.getMerkId());
-
-
-        MerkResponse merkResponse = new MerkResponse();
-        Merk merk = dealer.getMerkId();
-        merkResponse.setNamaMerk(merk.getNamaMerk());
-
-        return response;
-    }
-
     @Override
     public DealerResponse findByName(String namaDealer) {
-        // implementasi untuk mencari dealer berdasarkan nama
         Dealer dealer = dealerRepository.findByNamaDealer(namaDealer);
 
         if (dealer != null) {
@@ -175,11 +164,10 @@ public class DealerServiceImpl implements DealerService {
     }
 
     @Override
-    public List<DealerResponse> getActiveDealers() {
+    public List<DealerResponse> getActiveDealer() {
         List<Dealer> dealers = dealerRepository.findByActiveTrueAndDeletedFalse();
         return dealers.stream()
                 .map(this::convertToDealerResponse)
                 .collect(Collectors.toList());
     }
-
 }

@@ -9,11 +9,9 @@ import java.util.List;
 
 public interface DealerService {
 
-    DealerResponse createDealer(DealerDto dealerDto);
+    Dealer createDealer(DealerDto dealerDto);
 
     Dealer updateDealer(Integer id, Dealer updatedDealer);
-
-    List<DealerResponse> getAllDealers();
 
     DealerResponse getDealerById(Integer id);
 
@@ -21,5 +19,7 @@ public interface DealerService {
 
     void softDeleteById(Integer dealerId);
 
-    List<DealerResponse> getActiveDealers();
+    List<DealerResponse> getActiveDealer();
+
+    List<DealerResponse> getAllDealer();
 }
