@@ -50,7 +50,7 @@ public class DealerServiceImpl implements DealerService {
                 newDealer.setKeterangan(dealerDto.getKeterangan());
                 newDealer.setMerkId(merk);
                 newDealer.setCreatedBy(dealerDto.getCreatedBy());
-                newDealer.setCreatedDate(dealerDto.getCreatedDate());
+                newDealer.setCreatedDate(LocalDateTime.now());
 
 
                 return dealerRepository.save(newDealer);
