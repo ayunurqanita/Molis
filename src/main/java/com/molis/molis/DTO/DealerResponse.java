@@ -27,6 +27,7 @@ public class DealerResponse {
     public void setMerk(Merk merk) {
         if (merk != null) {
             MerkResponse merkResponse = new MerkResponse();
+            merkResponse.setMerkId(merk.getMerkId());
             merkResponse.setNamaMerk(merk.getNamaMerk());
             this.merk = merkResponse;
         }
@@ -36,7 +37,14 @@ public class DealerResponse {
     }
 
     public static class MerkResponse {
+        private Integer merkId;
         private String namaMerk;
+
+        public void setMerkId(Integer merkId) {
+            this.merkId = merkId;
+        }
+
+        public Integer getMerkId() {return merkId; }
 
         public void setNamaMerk(String namaMerk) {
             this.namaMerk = namaMerk;

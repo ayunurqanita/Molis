@@ -24,12 +24,20 @@ public class ProdukResponse {
 
     public void setMerk(Merk merk) {
         MerkResponse merkResponse = new MerkResponse();
+        merkResponse.setMerkId(merk.getMerkId());
         merkResponse.setNamaMerk(merk.getNamaMerk());
         this.merk = merkResponse;
     }
 
     public static class MerkResponse {
+        private Integer merkId;
         private String namaMerk;
+
+        public void setMerkId(Integer merkId) {
+            this.merkId = merkId;
+        }
+
+        public Integer getMerkId() {return merkId; }
 
         public void setNamaMerk(String namaMerk) {
             this.namaMerk = namaMerk;
