@@ -23,10 +23,13 @@ public class ProdukResponse {
     public MerkResponse getMerk() { return merk;}
 
     public void setMerk(Merk merk) {
-        MerkResponse merkResponse = new MerkResponse();
-        merkResponse.setNamaMerk(merk.getNamaMerk());
-        this.merk = merkResponse;
+        if (merk != null) {
+            MerkResponse merkResponse = new MerkResponse();
+            merkResponse.setNamaMerk(merk.getNamaMerk());
+            this.merk = merkResponse;
+        }
     }
+
 
     public static class MerkResponse {
         private String namaMerk;

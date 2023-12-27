@@ -109,7 +109,7 @@ public class ProdukServiceImpl implements ProdukService {
         return produkRepository.save(existingProduk);
     }
 
-    private ProdukResponse convertToDealerResponse(Produk produk){
+    private ProdukResponse convertToDealerResponse(Produk produk) {
         ProdukResponse response = new ProdukResponse();
 
         response.setProdukId(produk.getProdukId());
@@ -125,12 +125,21 @@ public class ProdukServiceImpl implements ProdukService {
         response.setGambarProduk(produk.getGambarProduk());
         response.setKeterangan(produk.getKeterangan());
 
-        MerkResponse merkResponse = new MerkResponse();
-        Merk merk = produk.getMerkId();
-        merkResponse.setNamaMerk(merk.getNamaMerk());
+        // Pengecekan null untuk objek Merk
+        if (produk.getMerkId()!= null) {
+            MerkResponse merkResponse = new MerkResponse();
+            Merk merk = produk.getMerkId();
+            merkResponse.setNamaMerk(merk.getNamaMerk());
+
+            response.setMerk(merk);
+        } else {
+            // Atau, sesuaikan dengan kebutuhan Anda, misalnya, setMerk menjadi null atau objek MerkResponse default
+            response.setMerk((Merk) null);
+        }
 
         return response;
     }
+
 
     @Override
     public List<ProdukResponse> getAllProduk() {
