@@ -10,11 +10,8 @@ import com.molis.molis.Repository.MerkRepository;
 import com.molis.molis.Repository.ProdukRepository;
 import com.molis.molis.Service.ProdukService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,37 +34,24 @@ public class ProdukServiceImpl implements ProdukService {
             Merk merk = merkRepository.findById(produkDto.getMerkId())
                     .orElseThrow(() -> new EntityNotFoundException("Merk dengan ID " + produkDto.getMerkId() + " tidak ditemukan"));
 
-            // Cek apakah produk dengan nama tersebut sudah ada
-            boolean existingProduk = produkRepository.existsByNamaProduk(produkDto.getNamaProduk());
+            Produk newProduk = new Produk();
+            newProduk.setNamaProduk(produkDto.getNamaProduk());
+            newProduk.setMerkId(merk);
+            newProduk.setEstimasiJarak(produkDto.getEstimasiJarak());
+            newProduk.setKecepatanMax(produkDto.getKecepatanMax());
+            newProduk.setKapasitasBaterai(produkDto.getKapasitasBaterai());
+            newProduk.setKetahananBaterai(produkDto.getKetahananBaterai());
+            newProduk.setDayaMax(produkDto.getDayaMax());
+            newProduk.setLinkWebsiteProduk(produkDto.getLinkWebsiteProduk());
+            newProduk.setLogo(produkDto.getLogo());
+            newProduk.setGambarProduk(produkDto.getGambarProduk());
+            newProduk.setKeterangan(produkDto.getKeterangan());
+            newProduk.setCreatedBy(produkDto.getCreatedBy());
+            newProduk.setCreatedDate(LocalDateTime.now());
 
-            if (!existingProduk) {
-                Produk newProduk = new Produk();
-                newProduk.setNamaProduk(produkDto.getNamaProduk());
-                newProduk.setMerkId(merk);
-                newProduk.setEstimasiJarak(produkDto.getEstimasiJarak());
-                newProduk.setKecepatanMax(produkDto.getKecepatanMax());
-                newProduk.setKapasitasBaterai(produkDto.getKapasitasBaterai());
-                newProduk.setKetahananBaterai(produkDto.getKetahananBaterai());
-                newProduk.setDayaMax(produkDto.getDayaMax());
-                newProduk.setLinkWebsiteProduk(produkDto.getLinkWebsiteProduk());
-                newProduk.setLogo(produkDto.getLogo());
-                newProduk.setGambarProduk(produkDto.getGambarProduk());
-                newProduk.setKeterangan(produkDto.getKeterangan());
-                newProduk.setCreatedBy(produkDto.getCreatedBy());
-                newProduk.setCreatedDate(LocalDateTime.now());
-                newProduk.setActive(true);
-                newProduk.setDeleted(false);
-
-                return produkRepository.save(newProduk);
-            } else {
-                // Handle existing produk, misalnya dengan memberikan respons khusus
-                throw new EntityExistsException("Produk dengan nama tersebut sudah ada");
-            }
+            return produkRepository.save(newProduk);
         } catch (EntityNotFoundException e) {
             // Tangani pengecualian dan lemparkan kembali sebagai EntityNotFoundException
-            throw e;
-        } catch (EntityExistsException e) {
-            // Tangani pengecualian dan lemparkan kembali sebagai EntityExistsException
             throw e;
         } catch (Exception e) {
             // Tangani pengecualian umum dan lemparkan sebagai RuntimeException
@@ -94,8 +78,6 @@ public class ProdukServiceImpl implements ProdukService {
         existingProduk.setKeterangan(updatedProduk.getKeterangan());
         existingProduk.setUpdatedBy(updatedProduk.getUpdatedBy());
         existingProduk.setUpdatedDate(LocalDateTime.now());
-        existingProduk.setActive(true);
-        existingProduk.setDeleted(false);
 
         // Perbarui merk jika perlu
         if (updatedProduk.getMerkId() != null) {
@@ -109,7 +91,7 @@ public class ProdukServiceImpl implements ProdukService {
         return produkRepository.save(existingProduk);
     }
 
-    private ProdukResponse convertToDealerResponse(Produk produk) {
+    private ProdukResponse convertToProdukResponse(Produk produk) {
         ProdukResponse response = new ProdukResponse();
 
         response.setProdukId(produk.getProdukId());
@@ -124,6 +106,7 @@ public class ProdukServiceImpl implements ProdukService {
         response.setLogo(produk.getLogo());
         response.setGambarProduk(produk.getGambarProduk());
         response.setKeterangan(produk.getKeterangan());
+        response.setActive(produk.getActive());
 
         // Pengecekan null untuk objek Merk
         if (produk.getMerkId()!= null) {
@@ -145,7 +128,7 @@ public class ProdukServiceImpl implements ProdukService {
     public List<ProdukResponse> getAllProduk() {
         List<Produk> produks = produkRepository.findAll();
         return produks.stream()
-                .map(this::convertToDealerResponse)
+                .map(this::convertToProdukResponse)
                 .collect(Collectors.toList());
     }
 
@@ -154,19 +137,19 @@ public class ProdukServiceImpl implements ProdukService {
         Produk produk = produkRepository.findById(produkId)
                 .orElseThrow(() -> new EntityNotFoundException("Produk not found with id: " + produkId));
 
-        return convertToDealerResponse(produk);
+        return convertToProdukResponse(produk);
     }
 
     @Override
-    public ProdukResponse findByName(String namaProduk) {
-        Produk produk = produkRepository.findByNamaProduk(namaProduk);
+    public List<ProdukResponse> findActiveProduk(String namaProduk) {
+        List<Produk> produk = produkRepository.findByNamaProdukAndActiveTrueAndDeletedFalse(namaProduk);
 
-        if (produk != null) {
-            return convertToDealerResponse(produk);
-        } else {
-            // handle jika dealer tidak ditemukan
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dealer dengan nama " + namaProduk + " tidak ditemukan");
-        }
+        // Lakukan konversi ke ProductResponse atau manipulasi data lainnya sesuai kebutuhan
+        List<ProdukResponse> responses = produk.stream()
+                .map(this::convertToProdukResponse)
+                .collect(Collectors.toList());
+
+        return responses;
     }
 
     @Override
@@ -176,8 +159,21 @@ public class ProdukServiceImpl implements ProdukService {
     public List<ProdukResponse> getActiveProduk() {
         List<Produk> produks = produkRepository.findByActiveTrueAndDeletedFalse();
         return produks.stream()
-                .map(this::convertToDealerResponse)
+                .map(this::convertToProdukResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deactivateProduk(Integer produkId) {
+        Optional<Produk> produkOptional = produkRepository.findById(produkId);
+
+        if (produkOptional.isPresent()) {
+            Produk produk = produkOptional.get();
+            produk.setActive(false); // Set active status to false
+            produkRepository.save(produk);
+        } else {
+            // Product not found, handle accordingly
+        }
     }
 }
 

@@ -18,6 +18,7 @@ public class DealerResponse {
     private String latitude;
     private String longitude;
     private String keterangan;
+    private Boolean active;
     private MerkResponse merk;
 
     public MerkResponse getMerk() {

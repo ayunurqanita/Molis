@@ -51,6 +51,7 @@ public class ProdukController {
                 response.setLogo(createdProduk.getLogo());
                 response.setGambarProduk(createdProduk.getGambarProduk());
                 response.setKeterangan(createdProduk.getKeterangan());
+                response.setActive(createdProduk.getActive());
                 response.setMerk(merk);
 
                 return ResponseEntity.ok(response);
@@ -94,6 +95,7 @@ public class ProdukController {
                 response.setLogo(updatedProduk.getLogo());
                 response.setGambarProduk(updatedProduk.getGambarProduk());
                 response.setKeterangan(updatedProduk.getKeterangan());
+                response.setActive(updatedProduk.getActive());
                 response.setMerk(merk);
 
                 return ResponseEntity.ok(response);
@@ -124,8 +126,9 @@ public class ProdukController {
     }
 
     @GetMapping("/findByName")
-    public ProdukResponse findByName(@RequestParam String namaProduk) {
-        return produkService.findByName(namaProduk);
+    public ResponseEntity<List<ProdukResponse>> searchProduk(@RequestParam String namaProduk) {
+        List<ProdukResponse> produk = produkService.findActiveProduk(namaProduk);
+        return ResponseEntity.ok(produk);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -136,4 +139,10 @@ public class ProdukController {
 
     @GetMapping("/active")
     public List<ProdukResponse> getActiveProduk() { return produkService.getActiveProduk();}
+
+    @PutMapping("/{productId}/deactivate")
+    public ResponseEntity<String> deactivateProduk(@PathVariable Integer productId) {
+        produkService.deactivateProduk(productId);
+        return ResponseEntity.ok("Product deactivation successful");
+    }
 }

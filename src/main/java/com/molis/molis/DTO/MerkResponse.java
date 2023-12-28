@@ -11,4 +11,5 @@ public class MerkResponse {
     private String namaPerusahaan;
     private String linkWebsite;
     private String keterangan;
+    private Boolean active;
 }

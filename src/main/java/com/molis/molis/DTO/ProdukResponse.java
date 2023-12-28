@@ -19,6 +19,7 @@ public class ProdukResponse {
     private String logo;
     private String gambarProduk;
     private String keterangan;
+    private Boolean active;
 
     public MerkResponse getMerk() { return merk;}
 

@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE produk SET deleted = true WHERE id=?")
 @EntityListeners(AuditingEntityListener.class)
 public class Produk {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "produk_id")
@@ -88,5 +89,9 @@ public class Produk {
     @Column(name = "is_deleted")
     private boolean deleted = Boolean.FALSE;
 
+
+    public Boolean getActive() {
+        return active;
+    }
 
 }

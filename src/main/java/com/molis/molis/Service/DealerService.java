@@ -15,11 +15,15 @@ public interface DealerService {
 
     DealerResponse getDealerById(Integer id);
 
-    DealerResponse findByName(String name);
+//    List<DealerResponse> findAllByName(String namaDealer);
 
     void softDeleteById(Integer dealerId);
 
     List<DealerResponse> getActiveDealer();
 
     List<DealerResponse> getAllDealer();
+
+    void deactivateDealer(Integer dealerId);
+
+    List<DealerResponse> findActiveDealers(String namaDealer);
 }

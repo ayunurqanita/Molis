@@ -1,5 +1,6 @@
 package com.molis.molis.Repository;
 
+import com.molis.molis.Model.Dealer;
 import com.molis.molis.Model.Produk;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,4 +24,8 @@ public interface ProdukRepository extends JpaRepository<Produk, Integer> {
     List<Produk> findByActiveTrueAndDeletedFalse();
 
     boolean existsByNamaProdukAndProdukIdNot(String namaProduk, Integer produkId);
+
+    List<Produk> findAllByNamaProduk(String namaProduk);
+
+    List<Produk> findByNamaProdukAndActiveTrueAndDeletedFalse(String namaProduk);
 }

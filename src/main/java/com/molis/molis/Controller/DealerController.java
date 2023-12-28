@@ -48,6 +48,7 @@ public class DealerController {
                 response.setLatitude(createdDealer.getLatitude());
                 response.setLongitude(createdDealer.getLongitude());
                 response.setKeterangan(createdDealer.getKeterangan());
+                response.setActive(createdDealer.getActive());
                 response.setMerk(merk);
 
                 return ResponseEntity.ok(response);
@@ -89,6 +90,7 @@ public class DealerController {
                 response.setLatitude(updatedDealer.getLatitude());
                 response.setLongitude(updatedDealer.getLongitude());
                 response.setKeterangan(updatedDealer.getKeterangan());
+                response.setActive(updatedDealer.getActive());
                 response.setMerk(merk);
 
                 return ResponseEntity.ok(response);
@@ -117,10 +119,18 @@ public class DealerController {
         return new ResponseEntity<>(dealer, HttpStatus.OK);
     }
 
-    @GetMapping("/findByName")
-    public DealerResponse findByName(@RequestParam String namaDealer) {
-        return dealerService.findByName(namaDealer);
-    }
+//    @GetMapping("/findByName")
+//    public ResponseEntity<List<DealerResponse>> findByName(@RequestParam String namaDealer) {
+//        List<DealerResponse> dealers = dealerService.findAllByName(namaDealer);
+//
+//        if (dealers.isEmpty()) {
+//            // Handle jika tidak ada dealer yang ditemukan
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        } else {
+//            // Mengembalikan daftar dealer yang ditemukan
+//            return new ResponseEntity<>(dealers, HttpStatus.OK);
+//        }
+//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteDealer(@PathVariable("id") Integer dealerId) {
@@ -131,5 +141,17 @@ public class DealerController {
     @GetMapping("/active")
     public List<DealerResponse> getActiveDealer() {
         return dealerService.getActiveDealer();
+    }
+
+    @PutMapping("/{dealerId}/deactivate")
+    public ResponseEntity<String> deactivateDealer(@PathVariable Integer dealerId) {
+        dealerService.deactivateDealer(dealerId);
+        return ResponseEntity.ok("Deactivation successful");
+    }
+
+    @GetMapping("/findByName")
+    public ResponseEntity<List<DealerResponse>> searchDealers(@RequestParam String namaDealer) {
+        List<DealerResponse> dealers = dealerService.findActiveDealers(namaDealer);
+        return ResponseEntity.ok(dealers);
     }
 }

@@ -86,4 +86,7 @@ public class Dealer {
     private boolean deleted = Boolean.FALSE;
 
 
+    public Boolean getActive() {
+        return active;
+    }
 }

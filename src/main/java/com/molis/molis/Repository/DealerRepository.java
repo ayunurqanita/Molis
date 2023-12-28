@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 public interface DealerRepository extends JpaRepository<Dealer, Integer> {
     @Modifying
@@ -18,9 +19,13 @@ public interface DealerRepository extends JpaRepository<Dealer, Integer> {
 
     List<Dealer> findByActiveTrueAndDeletedFalse();
 
-    Dealer findByNamaDealer(String namaDealer);
+    Optional<Dealer> findByNamaDealer(String namaDealer);
 
     boolean existsByNamaDealer(String namaDealer);
+
+    List<Dealer> findByNamaDealerAndActiveTrueAndDeletedFalse(String namaDealer);
+
+//    List<Dealer> findAllByNamaDealer(String namaDealer);
 }
 
 
