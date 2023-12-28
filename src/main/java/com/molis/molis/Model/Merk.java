@@ -57,7 +57,6 @@ public class Merk {
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @JsonIgnore
     @Column(name = "is_active")
     private boolean active = Boolean.TRUE;
 

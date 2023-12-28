@@ -108,4 +108,18 @@ public class MerkServiceImpl implements MerkService {
 
     @Override
     public List<Merk> findByNamaPerusahaan(String name) { return merkRepository.findByNamaPerusahaan(name);}
+
+    @Override
+    public void deactivateMerk(Integer merkId) {
+        Optional<Merk> merkOptional = merkRepository.findById(merkId);
+
+        if (merkOptional.isPresent()) {
+            Merk merk = merkOptional.get();
+            merk.setActive(false); // Set active status to false
+            merkRepository.save(merk);
+        } else {
+            // Merk not found, handle accordingly
+        }
+    }
+
 }

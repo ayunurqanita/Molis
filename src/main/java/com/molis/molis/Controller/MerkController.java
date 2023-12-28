@@ -65,4 +65,10 @@ public class MerkController {
 
     @GetMapping("/active")
     public List<Merk> getActiveMerk() { return merkService.getActiveMerk();}
+
+    @PutMapping("/deactivate/{id}")
+    public ResponseEntity<String> deactivateMerk(@PathVariable Integer id) {
+        merkService.deactivateMerk(id);
+        return ResponseEntity.ok("Deactivation successful");
+    }
 }
