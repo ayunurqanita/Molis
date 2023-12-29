@@ -15,16 +15,12 @@ public interface MerkRepository extends JpaRepository<Merk,Integer> {
     @Query("UPDATE Merk d SET d.deleted = true WHERE d.merkId = :merkId")
     void softDeleteById(@Param("merkId") Integer merkId);
 
-    List<Merk> findByNamaMerk(String namaMerk);
-
     List<Merk> findByNamaPerusahaan(String nama);
-
-    List<Merk> findByActiveTrueAndDeletedFalse();
 
     boolean existsByNamaMerk(String namaMerk);
 
-    List<Merk> findByNamaMerkAndActiveTrueAndDeletedFalse(String namaMerk);
-
     List<Merk> findByActiveTrueAndDeletedFalseOrActiveFalseAndDeletedFalse();
 
+    @Query("SELECT m FROM Merk m WHERE ((m.active = true AND m.deleted = false) OR (m.active = false AND m.deleted = false)) AND m.namaMerk = :namaMerk")
+    List<Merk> findActiveMerksByName(@Param("namaMerk") String namaMerk);
 }

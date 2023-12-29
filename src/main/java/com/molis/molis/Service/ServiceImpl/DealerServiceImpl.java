@@ -135,20 +135,6 @@ public class DealerServiceImpl implements DealerService {
         return convertToDealerResponse(dealer);
     }
 
-
-//    @Override
-//    public List<DealerResponse> findAllByName(String namaDealer) {
-//        List<Dealer> dealers = dealerRepository.findAllByNamaDealer(namaDealer);
-//
-//        // Lakukan konversi ke DealerResponse atau manipulasi data lainnya sesuai kebutuhan
-//        List<DealerResponse> responses = dealers.stream()
-//                .map(this::convertToDealerResponse)
-//                .collect(Collectors.toList());
-//
-//        return responses;
-//    }
-
-
     @Override
     public void softDeleteById(Integer dealerId) {
         dealerRepository.softDeleteById(dealerId);
@@ -176,8 +162,8 @@ public class DealerServiceImpl implements DealerService {
     }
 
     @Override
-    public List<DealerResponse> findActiveDealers(String namaDealer) {
-        List<Dealer> dealers = dealerRepository.findByNamaDealerAndActiveTrueAndDeletedFalse(namaDealer);
+    public List<DealerResponse> findActiveDealersByName(String namaDealer) {
+        List<Dealer> dealers = dealerRepository.findActiveDealersByName(namaDealer);
 
         // Lakukan konversi ke DealerResponse atau manipulasi data lainnya sesuai kebutuhan
         List<DealerResponse> responses = dealers.stream()

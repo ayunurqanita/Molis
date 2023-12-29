@@ -15,8 +15,6 @@ public interface DealerService {
 
     DealerResponse getDealerById(Integer id);
 
-//    List<DealerResponse> findAllByName(String namaDealer);
-
     void softDeleteById(Integer dealerId);
 
     List<DealerResponse> getActiveDealer();
@@ -25,5 +23,7 @@ public interface DealerService {
 
     void deactivateDealer(Integer dealerId);
 
-    List<DealerResponse> findActiveDealers(String namaDealer);
+//    List<DealerResponse> findActiveDealers(String namaDealer);
+
+    List<DealerResponse> findActiveDealersByName(String namaDealer);
 }

@@ -26,5 +26,6 @@ public interface MerkService {
 
     void deactivateMerk(Integer merkId);
 
-    List<MerkResponse> findActiveMerks(String namaMerk);
+    List<MerkResponse> findActiveMerksByName(String namaMerk);
+
 }

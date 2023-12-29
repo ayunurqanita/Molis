@@ -119,19 +119,6 @@ public class DealerController {
         return new ResponseEntity<>(dealer, HttpStatus.OK);
     }
 
-//    @GetMapping("/findByName")
-//    public ResponseEntity<List<DealerResponse>> findByName(@RequestParam String namaDealer) {
-//        List<DealerResponse> dealers = dealerService.findAllByName(namaDealer);
-//
-//        if (dealers.isEmpty()) {
-//            // Handle jika tidak ada dealer yang ditemukan
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        } else {
-//            // Mengembalikan daftar dealer yang ditemukan
-//            return new ResponseEntity<>(dealers, HttpStatus.OK);
-//        }
-//    }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteDealer(@PathVariable("id") Integer dealerId) {
         dealerService.softDeleteById(dealerId);
@@ -150,8 +137,8 @@ public class DealerController {
     }
 
     @GetMapping("/findByName")
-    public ResponseEntity<List<DealerResponse>> searchDealers(@RequestParam String namaDealer) {
-        List<DealerResponse> dealers = dealerService.findActiveDealers(namaDealer);
+    public ResponseEntity<List<DealerResponse>> findActiveDealersByName(@RequestParam String namaDealer) {
+        List<DealerResponse> dealers = dealerService.findActiveDealersByName(namaDealer);
         return ResponseEntity.ok(dealers);
     }
 }

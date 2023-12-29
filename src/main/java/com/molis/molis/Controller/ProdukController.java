@@ -126,9 +126,9 @@ public class ProdukController {
     }
 
     @GetMapping("/findByName")
-    public ResponseEntity<List<ProdukResponse>> searchProduk(@RequestParam String namaProduk) {
-        List<ProdukResponse> produk = produkService.findActiveProduk(namaProduk);
-        return ResponseEntity.ok(produk);
+    public ResponseEntity<List<ProdukResponse>> findProduksByName(@RequestParam String namaProduk) {
+        List<ProdukResponse> produks = produkService.findActiveProduksByName(namaProduk);
+        return ResponseEntity.ok(produks);
     }
 
     @DeleteMapping("/delete/{id}")

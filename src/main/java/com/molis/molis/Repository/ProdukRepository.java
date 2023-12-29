@@ -17,18 +17,8 @@ public interface ProdukRepository extends JpaRepository<Produk, Integer> {
     @Query("UPDATE Produk d SET d.deleted = true WHERE d.produkId = :produkId")
     void softDeleteById(@Param("produkId") Integer produkId);
 
-    Produk findByNamaProduk(String namaProduk);
-
-    boolean existsByNamaProduk(String namaProduk);
-
-    List<Produk> findByActiveTrueAndDeletedFalse();
-
-    boolean existsByNamaProdukAndProdukIdNot(String namaProduk, Integer produkId);
-
-    List<Produk> findAllByNamaProduk(String namaProduk);
-
-    List<Produk> findByNamaProdukAndActiveTrueAndDeletedFalse(String namaProduk);
-
     List<Produk> findByActiveTrueAndDeletedFalseOrActiveFalseAndDeletedFalse();
 
+    @Query("SELECT p FROM Produk p WHERE ((p.active = true AND p.deleted = false) OR (p.active = false AND p.deleted = false)) AND p.namaProduk = :namaProduk")
+    List<Produk> findActiveProduksByName(@Param("namaProduk") String namaProduk);
 }

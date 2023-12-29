@@ -17,17 +17,10 @@ public interface DealerRepository extends JpaRepository<Dealer, Integer> {
     @Query("UPDATE Dealer d SET d.deleted = true WHERE d.dealerId = :dealerId")
     void softDeleteById(@Param("dealerId") Integer dealerId);
 
-    List<Dealer> findByActiveTrueAndDeletedFalse();
-
-    Optional<Dealer> findByNamaDealer(String namaDealer);
-
-    boolean existsByNamaDealer(String namaDealer);
-
-    List<Dealer> findByNamaDealerAndActiveTrueAndDeletedFalse(String namaDealer);
-
     List<Dealer> findByActiveTrueAndDeletedFalseOrActiveFalseAndDeletedFalse();
 
-//    List<Dealer> findAllByNamaDealer(String namaDealer);
+    @Query("SELECT d FROM Dealer d WHERE ((d.active = true AND d.deleted = false) OR (d.active = false AND d.deleted = false)) AND d.namaDealer = :namaDealer")
+    List<Dealer> findActiveDealersByName(@Param("namaDealer") String namaDealer);
 }
 
 

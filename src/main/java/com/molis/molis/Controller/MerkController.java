@@ -74,8 +74,8 @@ public class MerkController {
     }
 
     @GetMapping("/findByName")
-    public ResponseEntity<List<MerkResponse>> searchMerks(@RequestParam String namaMerk) {
-        List<MerkResponse> merks = merkService.findActiveMerks(namaMerk);
+    public ResponseEntity<List<MerkResponse>> findMerksByName(@RequestParam String namaMerk) {
+        List<MerkResponse> merks = merkService.findActiveMerksByName(namaMerk);
         return ResponseEntity.ok(merks);
     }
 }

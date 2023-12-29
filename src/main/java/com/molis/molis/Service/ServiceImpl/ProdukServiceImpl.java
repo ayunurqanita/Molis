@@ -141,15 +141,13 @@ public class ProdukServiceImpl implements ProdukService {
     }
 
     @Override
-    public List<ProdukResponse> findActiveProduk(String namaProduk) {
-        List<Produk> produk = produkRepository.findByNamaProdukAndActiveTrueAndDeletedFalse(namaProduk);
+    public List<ProdukResponse> findActiveProduksByName(String namaProduk) {
+        List<Produk> produks = produkRepository.findActiveProduksByName(namaProduk);
 
-        // Lakukan konversi ke ProductResponse atau manipulasi data lainnya sesuai kebutuhan
-        List<ProdukResponse> responses = produk.stream()
+        // Konversi ke ProdukResponse atau lakukan manipulasi lain sesuai kebutuhan
+        return produks.stream()
                 .map(this::convertToProdukResponse)
                 .collect(Collectors.toList());
-
-        return responses;
     }
 
     @Override

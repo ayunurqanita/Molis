@@ -16,7 +16,7 @@ public interface ProdukService {
 
     ProdukResponse getProdukById(Integer produkId);
 
-    List<ProdukResponse> findActiveProduk(String namaProduk);
+    List<ProdukResponse> findActiveProduksByName(String namaProduk);
 
     void softDeleteById(Integer produkId);
 
