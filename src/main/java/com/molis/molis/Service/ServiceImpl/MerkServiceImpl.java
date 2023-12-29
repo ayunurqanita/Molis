@@ -129,7 +129,7 @@ public class MerkServiceImpl implements MerkService {
 
     @Override
     public List<Merk> getActiveMerk() {
-        return merkRepository.findByActiveTrueAndDeletedFalse();
+        return merkRepository.findByActiveTrueAndDeletedFalseOrActiveFalseAndDeletedFalse();
     }
 
     @Override

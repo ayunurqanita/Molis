@@ -157,7 +157,7 @@ public class ProdukServiceImpl implements ProdukService {
 
     @Override
     public List<ProdukResponse> getActiveProduk() {
-        List<Produk> produks = produkRepository.findByActiveTrueAndDeletedFalse();
+        List<Produk> produks = produkRepository.findByActiveTrueAndDeletedFalseOrActiveFalseAndDeletedFalse();
         return produks.stream()
                 .map(this::convertToProdukResponse)
                 .collect(Collectors.toList());

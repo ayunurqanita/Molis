@@ -25,6 +25,8 @@ public interface DealerRepository extends JpaRepository<Dealer, Integer> {
 
     List<Dealer> findByNamaDealerAndActiveTrueAndDeletedFalse(String namaDealer);
 
+    List<Dealer> findByActiveTrueAndDeletedFalseOrActiveFalseAndDeletedFalse();
+
 //    List<Dealer> findAllByNamaDealer(String namaDealer);
 }
 

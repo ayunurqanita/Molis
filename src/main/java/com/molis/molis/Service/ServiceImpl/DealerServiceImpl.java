@@ -156,7 +156,7 @@ public class DealerServiceImpl implements DealerService {
 
     @Override
     public List<DealerResponse> getActiveDealer() {
-        List<Dealer> dealers = dealerRepository.findByActiveTrueAndDeletedFalse();
+        List<Dealer> dealers = dealerRepository.findByActiveTrueAndDeletedFalseOrActiveFalseAndDeletedFalse();
         return dealers.stream()
                 .map(this::convertToDealerResponse)
                 .collect(Collectors.toList());

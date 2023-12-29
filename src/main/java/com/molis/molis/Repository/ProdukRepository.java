@@ -28,4 +28,7 @@ public interface ProdukRepository extends JpaRepository<Produk, Integer> {
     List<Produk> findAllByNamaProduk(String namaProduk);
 
     List<Produk> findByNamaProdukAndActiveTrueAndDeletedFalse(String namaProduk);
+
+    List<Produk> findByActiveTrueAndDeletedFalseOrActiveFalseAndDeletedFalse();
+
 }
