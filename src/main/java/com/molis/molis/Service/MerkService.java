@@ -2,6 +2,7 @@ package com.molis.molis.Service;
 
 
 import com.molis.molis.DTO.MerkDto;
+import com.molis.molis.DTO.MerkResponse;
 import com.molis.molis.Model.Merk;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface MerkService {
 
     Merk getMerkById(Integer id);
 
-    List<Merk> findByName(String name);
+//    List<Merk> findByName(String name);
 
     void softDeleteById(Integer merkId);
 
@@ -24,4 +25,6 @@ public interface MerkService {
     List<Merk> findByNamaPerusahaan(String name);
 
     void deactivateMerk(Integer merkId);
+
+    List<MerkResponse> findActiveMerks(String namaMerk);
 }

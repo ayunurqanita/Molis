@@ -1,6 +1,7 @@
 package com.molis.molis.Controller;
 
 import com.molis.molis.DTO.MerkDto;
+import com.molis.molis.DTO.MerkResponse;
 import com.molis.molis.Model.Merk;
 import com.molis.molis.Service.MerkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,10 +50,10 @@ public class MerkController {
         return merkService.getMerkById(id);
     }
 
-    @GetMapping("/findByName")
-    public List<Merk> findByName(@RequestParam String namaMerk) {
-        return merkService.findByName(namaMerk);
-    }
+//    @GetMapping("/findByName")
+//    public List<Merk> findByName(@RequestParam String namaMerk) {
+//        return merkService.findByName(namaMerk);
+//    }
 
     @GetMapping("/findByNamaPerusahaan")
     public List<Merk> findByNamaPerusahaan(@RequestParam String namaPerusahaan) { return merkService.findByNamaPerusahaan(namaPerusahaan);}
@@ -70,5 +71,11 @@ public class MerkController {
     public ResponseEntity<String> deactivateMerk(@PathVariable Integer id) {
         merkService.deactivateMerk(id);
         return ResponseEntity.ok("Deactivation successful");
+    }
+
+    @GetMapping("/findByName")
+    public ResponseEntity<List<MerkResponse>> searchMerks(@RequestParam String namaMerk) {
+        List<MerkResponse> merks = merkService.findActiveMerks(namaMerk);
+        return ResponseEntity.ok(merks);
     }
 }

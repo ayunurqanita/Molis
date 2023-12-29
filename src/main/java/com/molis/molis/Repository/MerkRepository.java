@@ -22,4 +22,6 @@ public interface MerkRepository extends JpaRepository<Merk,Integer> {
     List<Merk> findByActiveTrueAndDeletedFalse();
 
     boolean existsByNamaMerk(String namaMerk);
+
+    List<Merk> findByNamaMerkAndActiveTrueAndDeletedFalse(String namaMerk);
 }

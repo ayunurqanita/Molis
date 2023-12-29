@@ -1,6 +1,7 @@
 package com.molis.molis.Service.ServiceImpl;
 
 import com.molis.molis.DTO.MerkDto;
+import com.molis.molis.DTO.MerkResponse;
 import com.molis.molis.Model.Merk;
 import com.molis.molis.Repository.MerkRepository;
 import com.molis.molis.Service.MerkService;
@@ -11,6 +12,7 @@ import javax.persistence.EntityExistsException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MerkServiceImpl implements MerkService {
@@ -54,6 +56,30 @@ public class MerkServiceImpl implements MerkService {
         }
     }
 
+
+    //Bisa Create Merk dengan nama yang sudah ada
+
+//    @Override
+//    public Merk createMerk(MerkDto merkDto) {
+//        try {
+//            Merk newMerk = new Merk();
+//            newMerk.setNamaMerk(merkDto.getNamaMerk());
+//            newMerk.setNamaPerusahaan(merkDto.getNamaPerusahaan());
+//            newMerk.setLinkWebsite(merkDto.getLinkWebsite());
+//            newMerk.setKeterangan(merkDto.getKeterangan());
+//            newMerk.setCreatedBy(merkDto.getCreatedBy());
+//            newMerk.setCreatedDate(LocalDateTime.now());
+//            newMerk.setActive(true);
+//            newMerk.setDeleted(false);
+//
+//            return merkRepository.save(newMerk);
+//        } catch (Exception e) {
+//            throw new RuntimeException("Terjadi kesalahan saat membuat merk", e);
+//        }
+//    }
+
+
+
     @Override
     public Merk updateMerk(Integer id, Merk updatedMerk) {
         // Memastikan bahwa merk dengan ID yang diberikan ada dalam database
@@ -91,10 +117,10 @@ public class MerkServiceImpl implements MerkService {
         }
     }
 
-    @Override
-    public List<Merk> findByName(String name) {
-        return merkRepository.findByNamaMerk(name);
-    }
+//    @Override
+//    public List<Merk> findByName(String name) {
+//        return merkRepository.findByNamaMerk(name);
+//    }
 
     @Override
     public void softDeleteById(Integer merkId) {
@@ -120,6 +146,30 @@ public class MerkServiceImpl implements MerkService {
         } else {
             // Merk not found, handle accordingly
         }
+    }
+
+    private MerkResponse convertToMerkResponse(Merk merk) {
+        MerkResponse response = new MerkResponse();
+
+        response.setMerkId(merk.getMerkId());
+        response.setNamaMerk(merk.getNamaMerk());
+        response.setNamaPerusahaan(merk.getNamaPerusahaan());
+        response.setLinkWebsite(merk.getLinkWebsite());
+        response.setKeterangan(merk.getKeterangan());
+        response.setActive(merk.getActive());
+        return response;
+    }
+
+    @Override
+    public List<MerkResponse> findActiveMerks(String namaMerk) {
+        List<Merk> merks = merkRepository.findByNamaMerkAndActiveTrueAndDeletedFalse(namaMerk);
+
+        // Lakukan konversi ke MerkResponse atau manipulasi data lainnya sesuai kebutuhan
+        List<MerkResponse> responses = merks.stream()
+                .map(this::convertToMerkResponse)
+                .collect(Collectors.toList());
+
+        return responses;
     }
 
 }

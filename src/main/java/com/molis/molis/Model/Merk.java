@@ -69,5 +69,8 @@ public class Merk {
     }
 
 
+    public Boolean getActive() {
+        return active;
+    }
 }
 
