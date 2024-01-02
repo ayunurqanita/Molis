@@ -68,7 +68,7 @@ public class MerkController {
     public List<Merk> getActiveMerk() { return merkService.getActiveMerk();}
 
 
-    @PutMapping("/deactivate/{id}")
+    @PutMapping("/toggleStatus/{merkId}")
     public ResponseEntity<String> toggleMerkStatus(@PathVariable Integer merkId) {
         try {
             merkService.toggleMerkStatus(merkId);

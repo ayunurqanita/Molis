@@ -141,7 +141,7 @@ public class ProdukController {
     public List<ProdukResponse> getActiveProduk() { return produkService.getActiveProduk();}
 
 
-    @PutMapping("/{productId}/deactivate")
+    @PutMapping("/toggleStatus/{produkId}")
     public ResponseEntity<String> toggleProdukStatus(@PathVariable Integer produkId) {
         try {
             produkService.toggleProdukStatus(produkId);
