@@ -131,9 +131,9 @@ public class DealerController {
     }
 
     @PutMapping("/{dealerId}/deactivate")
-    public ResponseEntity<String> deactivateDealer(@PathVariable Integer dealerId) {
-        dealerService.deactivateDealer(dealerId);
-        return ResponseEntity.ok("Deactivation successful");
+    public ResponseEntity<String> toggleDealerStatus(@PathVariable Integer dealerId) {
+        dealerService.toggleDealerStatus(dealerId);
+        return ResponseEntity.ok("Dealer status toggled successfully");
     }
 
     @GetMapping("/findByName")

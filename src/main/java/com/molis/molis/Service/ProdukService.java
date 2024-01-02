@@ -22,6 +22,5 @@ public interface ProdukService {
 
     List<ProdukResponse> getActiveProduk();
 
-    void deactivateProduk(Integer produkId);
-
+    void toggleProdukStatus(Integer produkId);
 }

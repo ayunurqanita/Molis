@@ -94,4 +94,7 @@ public class Produk {
         return active;
     }
 
+    public boolean isActive() {
+        return active;
+    }
 }

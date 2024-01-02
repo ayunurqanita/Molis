@@ -16,7 +16,6 @@ public interface MerkService {
 
     Merk getMerkById(Integer id);
 
-//    List<Merk> findByName(String name);
 
     void softDeleteById(Integer merkId);
 
@@ -24,7 +23,9 @@ public interface MerkService {
 
     List<Merk> findByNamaPerusahaan(String name);
 
-    void deactivateMerk(Integer merkId);
+//    void deactivateMerk(Integer merkId);
+
+    void toggleMerkStatus(Integer merkId);
 
     List<MerkResponse> findActiveMerksByName(String namaMerk);
 

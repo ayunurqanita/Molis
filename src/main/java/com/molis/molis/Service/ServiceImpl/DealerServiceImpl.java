@@ -148,17 +148,15 @@ public class DealerServiceImpl implements DealerService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
-    public void deactivateDealer(Integer dealerId) {
+    public void toggleDealerStatus(Integer dealerId) {
         Optional<Dealer> dealerOptional = dealerRepository.findById(dealerId);
 
-        if (dealerOptional.isPresent()) {
-            Dealer dealer = dealerOptional.get();
-            dealer.setActive(false); // Set active status to false
+        dealerOptional.ifPresent(dealer -> {
+            dealer.setActive(!dealer.isActive()); // Toggle active status
             dealerRepository.save(dealer);
-        } else {
-            // Dealer not found, handle accordingly
-        }
+        });
     }
 
     @Override

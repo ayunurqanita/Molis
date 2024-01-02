@@ -89,4 +89,8 @@ public class Dealer {
     public Boolean getActive() {
         return active;
     }
+
+    public boolean isActive() {
+        return active;
+    }
 }

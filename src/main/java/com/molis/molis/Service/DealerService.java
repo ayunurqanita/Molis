@@ -21,9 +21,10 @@ public interface DealerService {
 
     List<DealerResponse> getAllDealer();
 
-    void deactivateDealer(Integer dealerId);
 
 //    List<DealerResponse> findActiveDealers(String namaDealer);
+
+    void toggleDealerStatus(Integer dealerId);
 
     List<DealerResponse> findActiveDealersByName(String namaDealer);
 }

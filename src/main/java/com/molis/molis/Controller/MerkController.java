@@ -67,10 +67,16 @@ public class MerkController {
     @GetMapping("/active")
     public List<Merk> getActiveMerk() { return merkService.getActiveMerk();}
 
+
     @PutMapping("/deactivate/{id}")
-    public ResponseEntity<String> deactivateMerk(@PathVariable Integer id) {
-        merkService.deactivateMerk(id);
-        return ResponseEntity.ok("Deactivation successful");
+    public ResponseEntity<String> toggleMerkStatus(@PathVariable Integer merkId) {
+        try {
+            merkService.toggleMerkStatus(merkId);
+            return ResponseEntity.ok("Status Merk berhasil diubah.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Terjadi kesalahan saat mengubah status Merk.");
+        }
     }
 
     @GetMapping("/findByName")

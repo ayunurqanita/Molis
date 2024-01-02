@@ -162,16 +162,13 @@ public class ProdukServiceImpl implements ProdukService {
     }
 
     @Override
-    public void deactivateProduk(Integer produkId) {
+    public void toggleProdukStatus(Integer produkId) {
         Optional<Produk> produkOptional = produkRepository.findById(produkId);
 
-        if (produkOptional.isPresent()) {
-            Produk produk = produkOptional.get();
-            produk.setActive(false); // Set active status to false
+        produkOptional.ifPresent(produk -> {
+            produk.setActive(!produk.isActive()); // Toggle active status
             produkRepository.save(produk);
-        } else {
-            // Product not found, handle accordingly
-        }
+        });
     }
 }
 

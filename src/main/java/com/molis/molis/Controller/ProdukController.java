@@ -140,9 +140,15 @@ public class ProdukController {
     @GetMapping("/active")
     public List<ProdukResponse> getActiveProduk() { return produkService.getActiveProduk();}
 
+
     @PutMapping("/{productId}/deactivate")
-    public ResponseEntity<String> deactivateProduk(@PathVariable Integer productId) {
-        produkService.deactivateProduk(productId);
-        return ResponseEntity.ok("Product deactivation successful");
+    public ResponseEntity<String> toggleProdukStatus(@PathVariable Integer produkId) {
+        try {
+            produkService.toggleProdukStatus(produkId);
+            return ResponseEntity.ok("Status Produk berhasil diubah.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Terjadi kesalahan saat mengubah status Produk.");
+        }
     }
 }
