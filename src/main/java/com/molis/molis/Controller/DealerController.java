@@ -136,9 +136,12 @@ public class DealerController {
         return ResponseEntity.ok("Dealer status toggled successfully");
     }
 
-    @GetMapping("/findByName")
-    public ResponseEntity<List<DealerResponse>> findActiveDealersByName(@RequestParam String namaDealer) {
-        List<DealerResponse> dealers = dealerService.findActiveDealersByName(namaDealer);
+
+    @GetMapping("/search")
+    public ResponseEntity<List<DealerResponse>> searchDealers(@RequestParam String searchTerm) {
+        List<DealerResponse> dealers = dealerService.findActiveDealersBySearchTerm(searchTerm);
         return ResponseEntity.ok(dealers);
     }
+
+
 }

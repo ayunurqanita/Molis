@@ -160,8 +160,8 @@ public class DealerServiceImpl implements DealerService {
     }
 
     @Override
-    public List<DealerResponse> findActiveDealersByName(String namaDealer) {
-        List<Dealer> dealers = dealerRepository.findActiveDealersByName(namaDealer);
+    public List<DealerResponse> findActiveDealersBySearchTerm(String searchTerm) {
+        List<Dealer> dealers = dealerRepository.findActiveDealersBySearchTerm(searchTerm);
 
         // Lakukan konversi ke DealerResponse atau manipulasi data lainnya sesuai kebutuhan
         List<DealerResponse> responses = dealers.stream()
@@ -170,4 +170,5 @@ public class DealerServiceImpl implements DealerService {
 
         return responses;
     }
+
 }

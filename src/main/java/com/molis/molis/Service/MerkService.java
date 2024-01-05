@@ -27,6 +27,5 @@ public interface MerkService {
 
     void toggleMerkStatus(Integer merkId);
 
-    List<MerkResponse> findActiveMerksByName(String namaMerk);
-
+    List<MerkResponse> findMerksBySearchTerm(String searchTerm);
 }

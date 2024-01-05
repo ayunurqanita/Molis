@@ -16,11 +16,11 @@ public interface ProdukService {
 
     ProdukResponse getProdukById(Integer produkId);
 
-    List<ProdukResponse> findActiveProduksByName(String namaProduk);
-
     void softDeleteById(Integer produkId);
 
     List<ProdukResponse> getActiveProduk();
 
     void toggleProdukStatus(Integer produkId);
+
+    List<ProdukResponse> findActiveProductsBySearchTerm(String searchTerm);
 }

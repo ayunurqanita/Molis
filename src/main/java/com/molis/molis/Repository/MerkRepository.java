@@ -23,4 +23,11 @@ public interface MerkRepository extends JpaRepository<Merk,Integer> {
 
     @Query("SELECT m FROM Merk m WHERE ((m.active = true AND m.deleted = false) OR (m.active = false AND m.deleted = false)) AND m.namaMerk = :namaMerk")
     List<Merk> findActiveMerksByName(@Param("namaMerk") String namaMerk);
+
+    @Query("SELECT m FROM Merk m WHERE " +
+            "((m.active = true AND m.deleted = false) OR (m.active = false AND m.deleted = false)) AND" +
+            "(LOWER(m.namaPerusahaan) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
+            "LOWER(m.linkWebsite) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
+            "LOWER(m.namaMerk) LIKE LOWER(CONCAT('%', :searchTerm, '%')))")
+    List<Merk> findMerksBySearchTerm(@Param("searchTerm") String searchTerm);
 }

@@ -125,12 +125,6 @@ public class ProdukController {
         return new ResponseEntity<>(produk, HttpStatus.OK);
     }
 
-    @GetMapping("/findByName")
-    public ResponseEntity<List<ProdukResponse>> findProduksByName(@RequestParam String namaProduk) {
-        List<ProdukResponse> produks = produkService.findActiveProduksByName(namaProduk);
-        return ResponseEntity.ok(produks);
-    }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteProduk(@PathVariable("id") Integer produkId) {
         produkService.softDeleteById(produkId);
@@ -150,5 +144,11 @@ public class ProdukController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Terjadi kesalahan saat mengubah status Produk.");
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProdukResponse>> searchProducts(@RequestParam String searchTerm) {
+        List<ProdukResponse> products = produkService.findActiveProductsBySearchTerm(searchTerm);
+        return ResponseEntity.ok(products);
     }
 }

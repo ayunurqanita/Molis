@@ -159,12 +159,14 @@ public class MerkServiceImpl implements MerkService {
     }
 
     @Override
-    public List<MerkResponse> findActiveMerksByName(String namaMerk) {
-        List<Merk> merks = merkRepository.findActiveMerksByName(namaMerk);
+    public List<MerkResponse> findMerksBySearchTerm(String searchTerm) {
+        List<Merk> merks = merkRepository.findMerksBySearchTerm(searchTerm);
 
-        // Konversi ke MerkResponse atau lakukan manipulasi lain sesuai kebutuhan
-        return merks.stream()
+        // Lakukan konversi ke MerkResponse atau manipulasi data lainnya sesuai kebutuhan
+        List<MerkResponse> responses = merks.stream()
                 .map(this::convertToMerkResponse)
                 .collect(Collectors.toList());
+
+        return responses;
     }
 }

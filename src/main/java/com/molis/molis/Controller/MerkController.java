@@ -7,7 +7,6 @@ import com.molis.molis.Service.MerkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -79,9 +78,9 @@ public class MerkController {
         }
     }
 
-    @GetMapping("/findByName")
-    public ResponseEntity<List<MerkResponse>> findMerksByName(@RequestParam String namaMerk) {
-        List<MerkResponse> merks = merkService.findActiveMerksByName(namaMerk);
+    @GetMapping("/search")
+    public ResponseEntity<List<MerkResponse>> searchMerks(@RequestParam String searchTerm) {
+        List<MerkResponse> merks = merkService.findMerksBySearchTerm(searchTerm);
         return ResponseEntity.ok(merks);
     }
 }

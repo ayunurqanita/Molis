@@ -141,16 +141,6 @@ public class ProdukServiceImpl implements ProdukService {
     }
 
     @Override
-    public List<ProdukResponse> findActiveProduksByName(String namaProduk) {
-        List<Produk> produks = produkRepository.findActiveProduksByName(namaProduk);
-
-        // Konversi ke ProdukResponse atau lakukan manipulasi lain sesuai kebutuhan
-        return produks.stream()
-                .map(this::convertToProdukResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public void softDeleteById(Integer produkId){ produkRepository.softDeleteById(produkId); }
 
     @Override
@@ -169,6 +159,18 @@ public class ProdukServiceImpl implements ProdukService {
             produk.setActive(!produk.isActive()); // Toggle active status
             produkRepository.save(produk);
         });
+    }
+
+    @Override
+    public List<ProdukResponse> findActiveProductsBySearchTerm(String searchTerm) {
+        List<Produk> products = produkRepository.findActiveProductsBySearchTerm(searchTerm);
+
+        // Lakukan konversi ke ProductResponse atau manipulasi data lainnya sesuai kebutuhan
+        List<ProdukResponse> responses = products.stream()
+                .map(this::convertToProdukResponse)
+                .collect(Collectors.toList());
+
+        return responses;
     }
 }
 
